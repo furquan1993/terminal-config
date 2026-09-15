@@ -18,3 +18,13 @@ setup, token discovery, inspection, and lifecycle operations. If native skill
 loading is unavailable, read `.agents/skills/argo-cli/SKILL.md` in this repository
 or `~/.agents/skills/argo-cli/SKILL.md` for the global installation.
 <!-- END argo-cli routing -->
+
+<!-- BEGIN kibana-logs routing -->
+## Kibana logs workflow
+
+For Kibana log queries through curl, index-pattern discovery, or Kibana cookie
+refresh, load the `kibana-logs` skill. If native loading is unavailable, read
+`.agents/skills/kibana-logs/SKILL.md` or the global
+`~/.agents/skills/kibana-logs/SKILL.md`. Resolve cluster patterns from data views,
+ask for unspecified time ranges, and keep session cookies out of chat and Git.
+<!-- END kibana-logs routing -->

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Kibana Logs"
+  short_description: "Query cluster logs and refresh Kibana cookies"
+policy:
+  allow_implicit_invocation: true

@@ -1,6 +1,44 @@
 # terminal-config
 My terminal config for any terminal
 
+## Kibana logs skill
+
+The [Kibana logs skill](.agents/skills/kibana-logs/SKILL.md) queries logs through
+curl and the Kibana Console proxy in Codex and Claude Code. It defaults to
+`https://kibana.concentricai.com` and the default Space, asks for unspecified
+time ranges, and maps cluster names to discovered data-view index patterns.
+It supports scoped searches, counts, aggregations, and partial-result reporting.
+
+When a session expires, the agent guides you to copy the Cookie request header
+from your signed-in browser and runs the included importer. It supports hidden
+input in a user-accessible terminal, or macOS clipboard import after you confirm
+the copied header is ready. You do not need to run Python yourself. Cookies are
+stored at `~/.config/kibana/cookies.txt` with owner-only permissions and are never
+committed. The helper requires Python 3.8+; queries require curl and a JSON parser.
+
+Install from this checkout's root on each machine:
+
+```sh
+mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
+ln -s "$PWD/.agents/skills/kibana-logs" "$HOME/.agents/skills/kibana-logs"
+ln -s ../../.agents/skills/kibana-logs "$HOME/.claude/skills/kibana-logs"
+```
+
+Compare existing destinations before replacing them. The repository's Claude
+skill is also a symlink to the shared source. Start a new session after installing.
+Use `$kibana-logs` in Codex, `/kibana-logs` in Claude Code, or ask to query Kibana.
+For explicit global routing, merge the marked Kibana block from `AGENTS.md` into
+your existing personal agent instructions, preserving their other contents.
+
+Run offline helper tests with:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/kibana-logs/scripts/test_import_cookies.py
+```
+
+Tests use synthetic cookies and make no network requests. Actual cluster mappings
+are discovered after authentication; installation does not query customer logs.
+
 ## Argo CLI skill
 
 The [Argo CLI skill](.agents/skills/argo-cli/SKILL.md) supports Argo Workflows
