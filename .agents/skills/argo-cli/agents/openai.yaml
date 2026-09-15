@@ -1,0 +1,5 @@
+interface:
+  display_name: "Argo CLI"
+  short_description: "Set up and operate Argo Workflows via CLI"
+policy:
+  allow_implicit_invocation: true

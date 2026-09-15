@@ -8,3 +8,13 @@ read `~/.agents/skills/pr-review/SKILL.md` and its applicable linked references.
 Show me the proposed comment summary and exact line comments first. Publish only
 the comments I select and authorize after reviewing them with you.
 <!-- END pr-review routing -->
+
+<!-- BEGIN argo-cli routing -->
+## Argo CLI workflow
+
+Whenever an Argo Workflows CLI interaction is needed, load and follow the
+`argo-cli` skill before running commands. This includes installation, connection
+setup, token discovery, inspection, and lifecycle operations. If native skill
+loading is unavailable, read `.agents/skills/argo-cli/SKILL.md` in this repository
+or `~/.agents/skills/argo-cli/SKILL.md` for the global installation.
+<!-- END argo-cli routing -->

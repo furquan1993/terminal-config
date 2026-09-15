@@ -1,6 +1,45 @@
 # terminal-config
 My terminal config for any terminal
 
+## Argo CLI skill
+
+The [Argo CLI skill](.agents/skills/argo-cli/SKILL.md) supports Argo Workflows
+in Codex and Claude Code. It covers CLI installation when missing, server
+connectivity, read-only token retrieval through Kubernetes, workflow inspection,
+and lifecycle operations with separately authorized write access.
+
+It defaults to `localhost:2746` and plain HTTP with
+`--argo-http1 --secure=false --insecure-skip-verify`. It checks the endpoint before
+operational commands and requests a port-forward or another address when needed.
+It asks for missing Kubernetes context and namespace information rather than
+asking for pasted tokens. A TLS-only server needs a compatible endpoint or an
+explicitly revised transport preference.
+
+The shared source is `.agents/skills/argo-cli/`; `.claude/skills/argo-cli` links
+to it. `AGENTS.md` supplies automatic routing, also read through `CLAUDE.md`.
+Codex invocation metadata explicitly enables implicit invocation.
+
+### Install Argo skill on another machine
+
+Clone this repository to a stable location, then run these commands from its root:
+
+```sh
+mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
+ln -s "$PWD/.agents/skills/argo-cli" "$HOME/.agents/skills/argo-cli"
+ln -s ../../.agents/skills/argo-cli "$HOME/.claude/skills/argo-cli"
+```
+
+If either destination exists, compare it first and preserve local customizations;
+these commands do not overwrite it. Start a new agent session after installation.
+The skill description enables automatic selection; for explicit global routing,
+merge the marked `argo-cli` block from `AGENTS.md` into existing personal
+`~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md` without replacing other instructions.
+
+Invoke with `$argo-cli` in Codex, `/argo-cli` in Claude Code, or a request such as
+“Use Argo to inspect my failed workflows.” Kubernetes credentials, namespace,
+server address, and tokens remain machine/session-specific and are never stored
+in this repository. This skill is for `argo`, not Argo CD's `argocd`.
+
 ## PR Review Agent
 
 The [PR Review Agent](.agents/skills/pr-review/SKILL.md) reviews GitHub PRs in
