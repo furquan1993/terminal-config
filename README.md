@@ -1,6 +1,73 @@
 # terminal-config
 My terminal config for any terminal
 
+## Jira writer skill
+
+The [Jira writer skill](.agents/skills/jira-writer/SKILL.md) turns a discussion
+or rough input into one or more Jira tickets on `concentricai.atlassian.net`.
+Every ticket follows a fixed, outcome-driven template written from a business
+point of view, stays under 500 words, and avoids code snippets unless they are
+essential. The structure is fixed, but the content is yours: before drafting, the
+agent proposes a ticket breakdown and confirms with you what each ticket should
+say. It asks only about material gaps, not every template heading; any substantive
+facts found elsewhere are proposed for your approval. It then shows all drafts
+(`J1`, `J2`, ...) and creates only the tickets you explicitly approve, through `twg`.
+
+Built-in rules:
+
+- **OP** (operations): Task, component DevOps, assignee `devops-jira-user`,
+  sprint DevOps Priority Queue, agreed due date set in Jira's due-date field,
+  and mandatory description fields from the Operations Jira process.
+- **SW** (everything else): Task, Bug for defects, Epic for three or more
+  related tickets or cross-team work. Best-matching component, left for
+  component-lead auto-assignment, backlog, priority Medium by default.
+- Existing labels only; new labels are proposed explicitly, never created
+  silently. SW tickets outside the Platform component get `cross-team`.
+- Larger work is broken into multiple tickets. Changes share a ticket only when
+  they are related and belong to the same component or team.
+- Bugs always include steps to reproduce.
+
+Templates live in `references/templates.md` and project defaults in
+`references/project-rules.md`. The skill requires an authenticated `twg` CLI
+with Jira access and the `twg` and `twg-jira` skills installed.
+
+Keep this checkout at a stable location. Install globally for Claude Code,
+Antigravity IDE and CLI, OpenCode, Codex, and Pi with one command from the
+checkout root:
+
+```sh
+sh .agents/skills/jira-writer/scripts/install.sh
+```
+
+The installer links the shared source at `.agents/skills/jira-writer` into:
+
+| Agent | Global skill path |
+| --- | --- |
+| Claude Code | `~/.claude/skills/jira-writer` |
+| Antigravity IDE | `~/.gemini/config/skills/jira-writer` |
+| Antigravity CLI | `~/.gemini/antigravity-cli/skills/jira-writer` |
+| OpenCode | `~/.config/opencode/skills/jira-writer` |
+| Codex | `~/.agents/skills/jira-writer` |
+| Pi | `~/.pi/agent/skills/jira-writer` (also supports `~/.agents/skills`) |
+
+It is safe to rerun and checks every destination before making changes. If a
+path already exists but points elsewhere, it stops without overwriting anything.
+For explicit global routing, merge the marked `jira-writer` block from
+`AGENTS.md` into your personal agent instructions. Restart your agent or reload
+skills after installation. Use `$jira-writer` in Codex, `/jira-writer` in Claude
+Code, `/skill:jira-writer` in Pi, or ask to "create Jiras from this discussion".
+
+Run the offline installer tests with:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/jira-writer/scripts/test_install.py
+```
+
+Skill paths: [Antigravity](https://antigravity.google/docs/skills),
+[OpenCode](https://opencode.ai/docs/skills/),
+[Codex](https://developers.openai.com/codex/skills), and
+[Pi](https://github.com/badlogic/pi-mono/blob/main/packages/coding-agent/docs/skills.md).
+
 ## Kibana logs skill
 
 The [Kibana logs skill](.agents/skills/kibana-logs/SKILL.md) queries logs through
