@@ -13,10 +13,18 @@ if [ ! -f "$source_dir/SKILL.md" ]; then
   exit 1
 fi
 
-# Preflight every destination before making changes, so a conflict does not
-# leave a partially installed skill.
+# Preflight every destination and its ancestors before making changes, so a
+# conflicting parent path cannot leave a partially installed skill.
 check_destination() {
   dest=$1
+  parent=$(dirname "$dest")
+  while [ "$parent" != / ]; do
+    if { [ -e "$parent" ] || [ -L "$parent" ]; } && [ ! -d "$parent" ]; then
+      printf 'error: %s is not a directory\n' "$parent" >&2
+      exit 1
+    fi
+    parent=$(dirname "$parent")
+  done
   if [ -L "$dest" ] && [ -d "$dest" ] &&
     [ "$(CDPATH= cd "$dest" && pwd -P)" = "$source_dir" ]; then
     return 0

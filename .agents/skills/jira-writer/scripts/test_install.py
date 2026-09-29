@@ -58,6 +58,28 @@ class InstallTest(unittest.TestCase):
         for relative in DESTINATIONS:
             self.assertFalse((self.home / relative).is_symlink())
 
+    def test_file_in_later_parent_prevents_partial_install(self):
+        blocked = self.home / ".config/opencode"
+        blocked.parent.mkdir()
+        blocked.write_text("keep me")
+        result = self.run_installer()
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn(str(blocked), result.stderr)
+        self.assertEqual("keep me", blocked.read_text())
+        for relative in DESTINATIONS:
+            self.assertFalse((self.home / relative).is_symlink())
+
+    def test_dangling_link_in_parent_prevents_partial_install(self):
+        blocked = self.home / ".gemini/config"
+        blocked.parent.mkdir()
+        blocked.symlink_to("missing")
+        result = self.run_installer()
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn(str(blocked), result.stderr)
+        self.assertEqual("missing", os.readlink(blocked))
+        for relative in DESTINATIONS:
+            self.assertFalse((self.home / relative).is_symlink())
+
     def test_dangling_link_is_not_overwritten(self):
         conflict = self.home / DESTINATIONS[0]
         conflict.parent.mkdir(parents=True)

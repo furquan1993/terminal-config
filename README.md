@@ -16,7 +16,8 @@ facts found elsewhere are proposed for your approval. It then shows all drafts
 Built-in rules:
 
 - **OP** (operations): Task, component DevOps, assignee `devops-jira-user`,
-  sprint DevOps Priority Queue, mandatory fields from the Operations Jira process.
+  sprint DevOps Priority Queue, agreed due date set in Jira's due-date field,
+  and mandatory description fields from the Operations Jira process.
 - **SW** (everything else): Task, Bug for defects, Epic for three or more
   related tickets or cross-team work. Best-matching component, left for
   component-lead auto-assignment, backlog, priority Medium by default.

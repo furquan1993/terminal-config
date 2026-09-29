@@ -20,8 +20,8 @@ Turn the current discussion and input into one or more Jira tickets on `concentr
 5. **Check for duplicates.** Search existing tickets for each agreed outcome (`twg jira workitem search` / JQL, or `similar` where supported). Surface likely duplicates and ask whether to create or use an existing ticket; do not silently drop or create one.
 6. **Draft** every ticket with [templates](references/templates.md), using only agreed content and obvious carry-overs disclosed in the content check. Rephrasing for clarity is fine; adding facts, promises, or acceptance criteria is not. Present all drafts together in the review format below. Do not create anything yet.
 7. **Review loop.** Apply the user's edits and re-show only the changed drafts. Creation requires an explicit instruction such as "create all" or "create J1 and J3". "Looks good" alone is not approval; ask whether to create.
-8. **Create** approved tickets in dependency order: epics first, then children with `--parent <EPIC_KEY>`. Write descriptions from a private temp file with `--description-format markdown`. Stop at the first failed create and report what was and was not created; never retry blindly into duplicates.
-9. **Verify** each created ticket with one batched `twg jira workitem get` and check project, type, summary, component, labels, priority, sprint, parent, and assignee. Report a table of key, summary, and URL, plus any field that did not apply.
+8. **Create** approved tickets in dependency order: epics first, then children with `--parent <EPIC_KEY>`. Before each OP create, require the user's agreed date and business justification and pass the date as Jira's `duedate` field as described in [project rules](references/project-rules.md); the description alone is not enough. Write descriptions from a private temp file with `--description-format markdown`. Stop at the first failed create and report what was and was not created; never retry blindly into duplicates.
+9. **Verify** each created ticket with one batched `twg jira workitem get` and check project, type, summary, component, labels, priority, sprint, parent, assignee, and `duedate` where applicable. An OP due date must equal the agreed date; report a mismatch as a failed verification rather than claiming success. Report a table of key, summary, and URL, plus any field that did not apply.
 
 ## Review format
 
@@ -31,6 +31,7 @@ Number drafts `J1`, `J2`, … and show for each:
 J1  [SW Task]  <summary>
 Component: <name>        Labels: <existing labels>         Priority: <P>
 Parent: <epic or J#>     Sprint: <none | DevOps Priority Queue>  Assignee: <auto: component lead | devops-jira-user>
+Due date (Jira field): <agreed YYYY-MM-DD for OP | agreed date for SW | none>
 Possible duplicates: <keys with one-line reason, or none found>
 Words: <description word count>
 
